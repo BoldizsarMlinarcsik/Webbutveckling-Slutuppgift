@@ -1,3 +1,4 @@
+/* Base styles */
 * {
     margin: 0;
     padding: 0;
@@ -15,6 +16,7 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
 /* Navigation */
 .navbar {
     position: fixed;
@@ -43,6 +45,7 @@ a {
 .logo svg {
     margin-right: 10px;
 }
+
 /* Desktop Navigation */
 .desktop-menu {
     display: none;
@@ -161,7 +164,6 @@ a {
     opacity: 1;
     visibility: visible;
 }
-
 /* Home page */
 .video-container {
     position: relative;
@@ -318,6 +320,7 @@ a {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 40px;
+    padding: 0 20px; /* Added padding for better responsiveness */
 }
 
 .destination-card {
@@ -326,6 +329,8 @@ a {
     overflow: hidden;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .destination-card:hover {
@@ -335,12 +340,15 @@ a {
 
 .destination-card img {
     width: 100%;
-    height: 200px;
+    height: 250px; /* Increased height for better visual appeal */
     object-fit: cover;
 }
 
 .card-content {
     padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-content h3 {
@@ -348,10 +356,19 @@ a {
     color: #333;
 }
 
-.card-content p {
+.destination-description {
     color: #666;
     margin-bottom: 15px;
     font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.destination-details {
+    display: none; /* Initially hide full description */
+    font-size: 14px; /* Ensure font size matches the collapsed state */
 }
 
 .read-more {
@@ -359,6 +376,22 @@ a {
     font-weight: 500;
     font-size: 14px;
     display: inline-block;
+    cursor: pointer;
+    margin-top: auto; /* Pushes the link to the bottom */
+    align-self: flex-start;
+    text-decoration: none;
+}
+
+.destination-details.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .destinations-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 10px;
+    }
 }
 
 /* Pricing page */
@@ -552,8 +585,8 @@ a {
     color: white;
     border: none;
     padding: 12px 25px;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 10px;
+    font-size: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -585,7 +618,7 @@ a {
 
 .testimonial.active {
     display: block;
-    animation: fadeIn 0.8s;
+    animation: fadeIn 1.4s;
 }
 
 @keyframes fadeIn {
@@ -596,7 +629,7 @@ a {
 .testimonial p {
     font-style: italic;
     margin-bottom: 20px;
-    line-height: 1.6;
+    line-height: 2;
 }
 
 .testimonial-author {
@@ -622,16 +655,28 @@ a {
     transition: background-color 0.3s;
 }
 
-.testimonial-nav button:hover {
-    background-color: #ff5252;
+.testimonial-nav a:hover {
+    background: #ff6b6b;
 }
 
 /* Footer */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-content {
+    flex: 1;
+}
+
 footer {
     background-color: #333;
     color: white;
     text-align: center;
     padding: 30px;
+    width: 100%;
+    margin-top: auto;
 }
 
 footer p {
@@ -656,7 +701,9 @@ footer p {
 }
 
 .social-links a:hover {
-    background-color: #ff6b6b;
+    background: #ff6b6b;
+    color: var(--primary-color);
+    transform: scale(1.15);
 }
 
 /* Enhanced connection between pages */
@@ -668,7 +715,7 @@ footer p {
 /* Improve destination cards */
 .destination-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
 }
   
@@ -699,8 +746,8 @@ footer p {
   
 /* Connected pricing & destinations cross-promotion */
 .cross-promotion {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url('../assets/images/europe-map.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+                url('../assets/paris.jpg.jpg');
     background-size: cover;
     background-position: center;
     color: white;
@@ -711,12 +758,12 @@ footer p {
 }
   
 .cross-promotion h3 {
-    font-size: 28px;
-    margin-bottom: 15px;
+    font-size: 25px;
+    margin-bottom: 25px;
 }
   
 .cross-promotion p {
-    margin-bottom: 25px;
+    margin-bottom: 40px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -733,9 +780,9 @@ footer p {
 }
   
 .cross-promotion a:hover {
-    background: white;
+    background: #ff6b6b;
     color: var(--primary-color);
-    transform: scale(1.05);
+    transform: scale(1.35);
 }
 
 /* Media queries */
@@ -883,7 +930,7 @@ footer p {
     transform: rotate(45deg);
 }
 
-/*adjustment for package info */
+/* Responsive adjustments for package info */
 @media (max-width: 768px) {
     .info-columns {
         flex-direction: column;

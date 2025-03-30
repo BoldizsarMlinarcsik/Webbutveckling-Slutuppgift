@@ -53,7 +53,10 @@
 
     <!-- Home content -->
     <div class="video-container">
-        <div id="youtube-player"></div>
+        <video autoplay loop muted playsinline>
+            <source src="assets/countries-look.mp4.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <div class="content">
             <h1>Explore Europe</h1>
             <div class="button-group">
@@ -63,33 +66,6 @@
         </div>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        // YouTube Player
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                videoId: '0xhzwDXfLds',
-                playerVars: {
-                    'autoplay': 1,
-                    'mute': 1,
-                    'controls': 0,
-                    'showinfo': 0,
-                    'rel': 0,
-                    'loop': 1,
-                    'playlist': '0xhzwDXfLds',
-                    'start': 10
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
-    </script>
     <script src="js/script.js"></script>
 </body>
 </html>

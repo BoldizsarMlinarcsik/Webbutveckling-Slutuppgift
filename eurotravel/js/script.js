@@ -1,104 +1,101 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
+    // Navigation and Menu Elements
     const hamburger = document.querySelector('.hamburger');
     const menu = document.querySelector('.menu');
     const overlay = document.querySelector('.overlay');
     
-    // Toggle menu function
+    // Toggle Mobile Menu
     function toggleMenu() {
-        if (hamburger && menu && overlay) {
-            hamburger.classList.toggle('active');
-            menu.classList.toggle('active');
-            overlay.classList.toggle('active');
-            document.body.classList.toggle('menu-open'); // Added this for consistent body state management
-        }
+        hamburger.classList.toggle('active');
+        menu.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
     }
     
-    // Close menu function
+    // Close Mobile Menu
     function closeMenu() {
-        if (hamburger && menu && overlay) {
-            hamburger.classList.remove('active');
-            menu.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.classList.remove('menu-open');
-        }
+        hamburger.classList.remove('active');
+        menu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.classList.remove('menu-open');
     }
     
-    // Event listeners for menu toggling
-    if (hamburger) {
-        hamburger.addEventListener('click', toggleMenu);
-    }
+    // Event Listeners
+    if (hamburger) hamburger.addEventListener('click', toggleMenu);
+    if (overlay) overlay.addEventListener('click', closeMenu);
     
-    if (overlay) {
-        overlay.addEventListener('click', closeMenu);
-    }
-    
-    // Close menu when clicking a link
-    const menuLinks = document.querySelectorAll('.menu ul li a');
-    menuLinks.forEach(link => {
+    // Close menu when link is clicked
+    document.querySelectorAll('.menu ul li a, nav a').forEach(link => {
         link.addEventListener('click', closeMenu);
     });
     
-    // Highlight current page in navigation
+    // Highlight Current Page
     const currentPage = window.location.pathname.split('/').pop();
-    const navLinks = document.querySelectorAll('nav a, .menu a');
-    
-    navLinks.forEach(link => {
+    document.querySelectorAll('nav a, .menu a').forEach(link => {
         const linkPage = link.getAttribute('href');
         if (linkPage === currentPage || (currentPage === '' && linkPage === 'index.html')) {
             link.classList.add('current-page');
         }
     });
-
-    // YouTube API handling
-    if (document.getElementById('youtube-player')) {
-        // This is already handled by the YouTube iframe API in index.html
-        // Additional YouTube customization could go here if needed
-    }
     
-    // Testimonial slider functionality
+    // destination read more/less
+    // Enhanced Read More functionality for destination cards
+    document.querySelectorAll('.destination-card').forEach(card => {
+        const readMoreBtn = card.querySelector('.read-more');
+        const description = card.querySelector('.destination-description');
+        const fullDescription = card.querySelector('.destination-details');
+        
+        if (readMoreBtn && description && fullDescription) {
+            readMoreBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Toggle between short and full description
+                if (description.style.display !== 'none') {
+                    description.style.display = 'none';
+                    fullDescription.classList.add('active');
+                    readMoreBtn.textContent = 'Read Less ←';
+                } else {
+                    description.style.display = '-webkit-box';
+                    fullDescription.classList.remove('active');
+                    readMoreBtn.textContent = 'Read More →';
+                }
+            });
+        }
+    });
+    
+    // Testimonial Slider
     const testimonials = document.querySelectorAll('.testimonial');
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
     
-    if (testimonials.length > 0 && prevBtn && nextBtn) {
+    if (testimonials.length && prevBtn && nextBtn) {
         let currentIndex = 0;
         
-        // Show the current testimonial
         function showTestimonial(index) {
-            testimonials.forEach(testimonial => {
-                testimonial.classList.remove('active');
-            });
+            testimonials.forEach(t => t.classList.remove('active'));
             testimonials[index].classList.add('active');
         }
         
-        // Next testimonial
-        nextBtn.addEventListener('click', function() {
+        nextBtn.addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % testimonials.length;
             showTestimonial(currentIndex);
         });
         
-        // Previous testimonial
-        prevBtn.addEventListener('click', function() {
+        prevBtn.addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
             showTestimonial(currentIndex);
         });
         
-        // Show first testimonial on page load
         showTestimonial(currentIndex);
     }
     
-    // Pricing tabs functionality
+    // Pricing Tabs
     const pricingTabs = document.querySelectorAll('.pricing-tab');
-    if (pricingTabs.length > 0) {
+    if (pricingTabs.length) {
         pricingTabs.forEach(tab => {
             tab.addEventListener('click', function() {
-                // Remove active class from all tabs
-                document.querySelectorAll('.pricing-tab').forEach(t => {
-                    t.classList.remove('active');
-                });
-                
-                // Add active class to clicked tab
+                // Deactivate all tabs
+                pricingTabs.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 
                 // Hide all packages
@@ -106,100 +103,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     card.style.display = 'none';
                 });
                 
-                // Show the selected package
+                // Show selected package
                 const target = this.getAttribute('data-target');
                 document.getElementById(target + '-packages').style.display = 'flex';
             });
         });
-
-        // Add "Most Popular" indicator to the middle package
-        const allPricingCards = document.querySelectorAll('.pricing-card');
-        if (allPricingCards.length >= 3) {
-            allPricingCards[1].classList.add('recommended');
-        }
-    }
-
-    // FAQ accordion functionality
-    const faqItems = document.querySelectorAll('.faq-item');
-    if (faqItems.length > 0) {
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', function() {
-                item.classList.toggle('active');
-                
-                const toggleIcon = this.querySelector('.toggle-icon');
-                if (toggleIcon) {
-                    toggleIcon.textContent = item.classList.contains('active') ? '-' : '+';
-                }
-                
-                const answer = item.querySelector('.faq-answer');
-                if (answer) {
-                    if (item.classList.contains('active')) {
-                        answer.style.maxHeight = answer.scrollHeight + 'px';
-                    } else {
-                        answer.style.maxHeight = 0;
-                    }
-                }
-            });
-        });
-    }
-
-    // Add cross-promotion sections to connect pages
-    function addCrossPromotion() {
-        // On destinations page, add pricing cross-promotion
-        if (currentPage === 'destinations.html') {
-            const destinationsPage = document.querySelector('.destinations-page');
-            if (destinationsPage) {
-                const crossPromo = document.createElement('div');
-                crossPromo.className = 'cross-promotion';
-                crossPromo.innerHTML = `
-                    <h3>Find the Perfect Package for Your Dream Destination</h3>
-                    <p>Now that you've explored our popular destinations, check out our tailored tour packages designed to give you the best experience.</p>
-                    <a href="pricing.html">View Tour Packages</a>
-                `;
-                destinationsPage.appendChild(crossPromo);
-            }
-        }
         
-        // On pricing page, add destinations cross-promotion
-        if (currentPage === 'pricing.html') {
-            const ctaSection = document.querySelector('.cta-section');
-            if (ctaSection) {
-                const crossPromo = document.createElement('div');
-                crossPromo.className = 'cross-promotion';
-                crossPromo.innerHTML = `
-                    <h3>Discover Where Your Adventure Begins</h3>
-                    <p>Explore our handpicked destinations across Europe and find your perfect getaway spot.</p>
-                    <a href="destinations.html">Browse Destinations</a>
-                `;
-                ctaSection.before(crossPromo);
-            }
+        // Mark middle package as recommended
+        const pricingCards = document.querySelectorAll('.pricing-card');
+        if (pricingCards.length >= 3) {
+            pricingCards[1].classList.add('recommended');
         }
     }
     
-    addCrossPromotion();
-
-    // Interactive destination cards
-    const destinationCards = document.querySelectorAll('.destination-card');
-    destinationCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            const cardContent = this.querySelector('.card-content');
-            if (cardContent) {
-                cardContent.style.transform = 'translateY(0)';
+    // FAQ Accordion
+    document.querySelectorAll('.faq-item').forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', function() {
+            item.classList.toggle('active');
+            
+            const toggleIcon = this.querySelector('.toggle-icon');
+            if (toggleIcon) {
+                toggleIcon.textContent = item.classList.contains('active') ? '-' : '+';
             }
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            const cardContent = this.querySelector('.card-content');
-            if (cardContent) {
-                cardContent.style.transform = 'translateY(60px)';
+            
+            const answer = item.querySelector('.faq-answer');
+            if (answer) {
+                answer.style.maxHeight = item.classList.contains('active') 
+                    ? answer.scrollHeight + 'px' 
+                    : 0;
             }
         });
     });
 });
-document.querySelectorAll('.faq-question').forEach(question => {
-    question.addEventListener('click', () => {
-      const faqItem = question.parentElement;
-      faqItem.classList.toggle('active');
-    });
-  });
